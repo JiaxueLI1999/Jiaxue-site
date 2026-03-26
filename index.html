@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>佳雪 · Jiaxue — Paris</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Serif+SC:wght@300;400;600&family=Space+Mono:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1612; --cream: #f5f0e8; --warm: #f0e8d8;
+    --accent: #c8553d; --gold: #d4a853; --sage: #7a9e7e;
+    --muted: #8a7f74; --border: #d4c9bb;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--cream); color:var(--ink); font-family:'Noto Serif SC',serif; overflow-x:hidden; }
+  body::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:100; opacity:0.6;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+
+  /* LANG SWITCHER */
+  .lang-switcher {
+    position:fixed; top:24px; right:28px; z-index:200;
+    display:flex; gap:4px;
+    background:rgba(26,22,18,0.88); border:1px solid rgba(212,168,83,0.25);
+    border-radius:100px; padding:5px 8px; backdrop-filter:blur(10px);
+  }
+  .lang-btn {
+    font-family:'Space Mono',monospace; font-size:10px; letter-spacing:1px;
+    color:rgba(245,240,232,0.45); background:none; border:none; cursor:pointer;
+    padding:5px 10px; border-radius:100px; transition:all 0.2s;
+  }
+  .lang-btn:hover { color:rgba(245,240,232,0.9); }
+  .lang-btn.active { background:var(--gold); color:var(--ink); font-weight:bold; }
+
+  /* HERO */
+  .hero { min-height:100vh; display:grid; grid-template-columns:1fr 1fr; overflow:hidden; }
+  .hero-left {
+    background:var(--ink); color:var(--cream);
+    padding:80px 60px; display:flex; flex-direction:column;
+    justify-content:space-between; position:relative; overflow:hidden;
+  }
+  .hero-left::after {
+    content:''; position:absolute; bottom:-60px; right:-60px;
+    width:300px; height:300px; border-radius:50%;
+    border:1px solid rgba(212,168,83,0.3); pointer-events:none;
+  }
+  .hero-left::before {
+    content:''; position:absolute; top:40px; right:40px;
+    width:120px; height:120px; border-radius:50%;
+    border:1px solid rgba(212,168,83,0.2); pointer-events:none;
+  }
+  .nav-dot { display:flex; gap:8px; align-items:center; margin-bottom:60px; }
+  .nav-dot .dot {
+    width:8px; height:8px; border-radius:50%; background:var(--gold);
+    display:inline-block; animation:pulse 2s infinite;
+  }
+  .nav-dot .dot:nth-child(2) { animation-delay:0.3s; background:var(--accent); }
+  .nav-dot .dot:nth-child(3) { animation-delay:0.6s; background:var(--sage); }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+  .nav-label { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:2px; color:var(--muted); margin-left:4px; }
+  .hero-name { font-family:'Playfair Display',serif; font-size:clamp(52px,6vw,88px); font-weight:700; line-height:0.95; letter-spacing:-2px; }
+  .hero-name .cn { font-family:'Noto Serif SC',serif; font-weight:600; font-size:clamp(38px,4vw,60px); color:var(--gold); display:block; margin-bottom:8px; }
+  .hero-location { font-family:'Space Mono',monospace; font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-top:24px; }
+  .hero-tagline { font-size:15px; line-height:1.8; color:rgba(245,240,232,0.75); max-width:340px; margin-top:auto; padding-top:48px; }
+  .hero-subtitle { font-family:'Space Mono',monospace; font-size:10px; color:rgba(245,240,232,0.25); letter-spacing:1px; }
+  .hero-right { background:var(--warm); padding:80px 60px; display:flex; flex-direction:column; justify-content:center; }
+  .roles-list { list-style:none; }
+  .roles-list li {
+    padding:20px 0; border-bottom:1px solid var(--border);
+    display:flex; align-items:flex-start; gap:16px;
+    opacity:0; transform:translateX(20px); animation:slideIn 0.6s forwards;
+  }
+  @keyframes slideIn { to{opacity:1;transform:translateX(0)} }
+  .roles-list li:nth-child(1){animation-delay:0.1s} .roles-list li:nth-child(2){animation-delay:0.2s}
+  .roles-list li:nth-child(3){animation-delay:0.3s} .roles-list li:nth-child(4){animation-delay:0.4s}
+  .roles-list li:nth-child(5){animation-delay:0.5s}
+  .role-emoji { font-size:20px; flex-shrink:0; margin-top:2px; }
+  .role-title { font-family:'Playfair Display',serif; font-size:16px; font-weight:700; margin-bottom:4px; }
+  .role-sub { font-size:12px; color:var(--muted); line-height:1.6; }
+
+  /* SECTIONS */
+  .section { padding:100px 0; }
+  .container { max-width:1100px; margin:0 auto; padding:0 60px; }
+  .section-label { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+  .section-title { font-family:'Playfair Display',serif; font-size:clamp(32px,4vw,52px); font-weight:700; line-height:1.1; letter-spacing:-1px; margin-bottom:60px; }
+
+  /* ABOUT */
+  .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start; }
+  .about-text { font-size:16px; line-height:1.9; color:#3a3530; }
+  .about-text p+p { margin-top:20px; }
+  .highlight { background:linear-gradient(120deg,rgba(200,85,61,.15),rgba(212,168,83,.15)); padding:2px 6px; border-radius:3px; }
+  .stat-cards { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .stat-card { background:var(--ink); color:var(--cream); padding:28px 24px; border-radius:4px; position:relative; overflow:hidden; transition:transform 0.2s; }
+  .stat-card:hover { transform:translateY(-4px); }
+  .stat-card::before { content:''; position:absolute; top:0; right:0; width:60px; height:60px; background:var(--gold); opacity:.1; border-radius:0 0 0 60px; }
+  .stat-num { font-family:'Playfair Display',serif; font-size:42px; font-weight:700; color:var(--gold); line-height:1; }
+  .stat-label { font-size:12px; color:rgba(245,240,232,.7); margin-top:8px; line-height:1.4; }
+
+  /* PROJECTS */
+  .projects-section { background:var(--ink); color:var(--cream); }
+  .projects-section .section-title { color:var(--cream); }
+  .projects-section .section-label { color:var(--gold); }
+  .projects-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+  .project-card { background:rgba(255,255,255,.03); padding:36px 28px; border:1px solid rgba(255,255,255,.06); position:relative; overflow:hidden; transition:background 0.3s; cursor:default; }
+  .project-card:hover { background:rgba(255,255,255,.07); }
+  .project-card::after { content:''; position:absolute; bottom:0; left:0; width:0%; height:2px; background:var(--gold); transition:width 0.4s; }
+  .project-card:hover::after { width:100%; }
+  .project-icon { font-size:28px; margin-bottom:20px; }
+  .project-name { font-family:'Playfair Display',serif; font-size:18px; margin-bottom:12px; color:var(--cream); }
+  .project-desc { font-size:13px; line-height:1.8; color:rgba(245,240,232,.55); }
+  .project-tag { display:inline-block; font-family:'Space Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); border:1px solid rgba(212,168,83,.3); padding:3px 8px; border-radius:2px; margin-top:16px; }
+
+  /* INTERESTS */
+  .interests-section { background:var(--warm); }
+  .interests-flow { display:flex; flex-wrap:wrap; gap:12px; }
+  .interest-pill { padding:10px 20px; border:1.5px solid var(--ink); border-radius:100px; font-size:13px; font-family:'Space Mono',monospace; cursor:default; transition:all 0.2s; }
+  .interest-pill:hover { background:var(--ink); color:var(--cream); }
+  .interest-pill.accent { border-color:var(--accent); color:var(--accent); }
+  .interest-pill.accent:hover { background:var(--accent); color:var(--cream); }
+  .interest-pill.gold { border-color:var(--gold); color:#9a7020; }
+  .interest-pill.gold:hover { background:var(--gold); color:var(--ink); }
+
+  /* GOALS */
+  .goals-list { display:flex; flex-direction:column; max-width:720px; }
+  .goal-item { display:grid; grid-template-columns:56px 1fr; align-items:start; gap:24px; padding:32px 0; border-bottom:1px solid var(--border); }
+  .goal-num { font-family:'Playfair Display',serif; font-size:48px; font-weight:700; color:var(--border); line-height:1; }
+  .goal-title { font-family:'Playfair Display',serif; font-size:20px; margin-bottom:8px; }
+  .goal-detail { font-size:13px; color:var(--muted); line-height:1.7; }
+
+  /* FUN */
+  .fun-section { background:var(--accent); color:var(--cream); padding:80px 0; }
+  .fun-section .section-label { color:rgba(255,255,255,.6); }
+  .fun-section .section-title { color:var(--cream); }
+  .fun-ticker { overflow:hidden; white-space:nowrap; border-top:1px solid rgba(255,255,255,.2); border-bottom:1px solid rgba(255,255,255,.2); padding:16px 0; margin-bottom:48px; }
+  .fun-ticker-inner { display:inline-block; animation:ticker 22s linear infinite; font-family:'Space Mono',monospace; font-size:12px; letter-spacing:2px; color:rgba(255,255,255,.7); }
+  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  .fun-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+  .fun-card { background:rgba(255,255,255,.1); border-radius:4px; padding:24px 20px; transition:background 0.2s; }
+  .fun-card:hover { background:rgba(255,255,255,.15); }
+  .fun-emoji { font-size:24px; margin-bottom:12px; }
+  .fun-text { font-size:13px; line-height:1.6; color:rgba(255,255,255,.85); }
+
+  /* CONNECT */
+  .connect-section { background:var(--ink); color:var(--cream); padding:120px 0; text-align:center; }
+  .connect-section .section-label { color:var(--sage); }
+  .connect-title { font-family:'Playfair Display',serif; font-size:clamp(40px,6vw,80px); font-weight:700; line-height:1; letter-spacing:-2px; margin-bottom:24px; }
+  .connect-title em { color:var(--gold); font-style:italic; }
+  .connect-sub { font-size:15px; color:rgba(245,240,232,.6); max-width:500px; margin:0 auto 48px; line-height:1.8; }
+  .connect-cta { display:inline-block; background:var(--gold); color:var(--ink); font-family:'Space Mono',monospace; font-size:12px; letter-spacing:2px; text-transform:uppercase; text-decoration:none; padding:16px 40px; border-radius:2px; transition:all 0.2s; }
+  .connect-cta:hover { background:var(--cream); transform:translateY(-2px); }
+
+  /* FOOTER */
+  .footer { background:var(--ink); border-top:1px solid rgba(255,255,255,.08); padding:24px 60px; display:flex; justify-content:space-between; align-items:center; color:rgba(245,240,232,.3); font-family:'Space Mono',monospace; font-size:10px; letter-spacing:1px; }
+
+  /* LANG TRANSITION */
+  .lang-fade { animation:langFade 0.25s ease; }
+  @keyframes langFade { from{opacity:0;transform:translateY(3px)} to{opacity:1;transform:translateY(0)} }
+
+  /* RESPONSIVE */
+  @media(max-width:900px) {
+    .hero{grid-template-columns:1fr;min-height:auto}
+    .hero-left{padding:80px 32px 60px;min-height:60vh}
+    .hero-right{padding:48px 32px}
+    .about-grid{grid-template-columns:1fr}
+    .projects-grid{grid-template-columns:1fr}
+    .fun-grid{grid-template-columns:repeat(2,1fr)}
+    .container{padding:0 32px}
+    .footer{flex-direction:column;gap:8px;text-align:center}
+    .lang-switcher{top:16px;right:16px}
+  }
+  @media(max-width:600px) {
+    .stat-cards{grid-template-columns:1fr}
+    .fun-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="lang-switcher">
+  <button class="lang-btn active" onclick="setLang('zh')">中文</button>
+  <button class="lang-btn" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('fr')">FR</button>
+</div>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="nav-dot">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="nav-label">PARIS · 2025</span>
+    </div>
+    <div>
+      <div class="hero-name"><span class="cn">佳雪</span>Jiaxue</div>
+      <div class="hero-location">🇫🇷 Paris · Supply Chain × Data × Life</div>
+      <div class="hero-tagline" id="hero-tagline"></div>
+    </div>
+    <div class="hero-subtitle" id="hero-subtitle"></div>
+  </div>
+  <div class="hero-right">
+    <ul class="roles-list" id="roles-list"></ul>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-label" id="about-label"></div>
+    <div class="section-title" id="about-title"></div>
+    <div class="about-grid">
+      <div class="about-text" id="about-text"></div>
+      <div class="stat-cards">
+        <div class="stat-card">
+          <div class="stat-num">30<span style="font-size:20px;color:var(--gold)">+</span></div>
+          <div class="stat-label" id="stat1"></div>
+        </div>
+        <div class="stat-card" style="background:var(--accent)">
+          <div class="stat-num" style="color:var(--cream)">1<span style="font-size:20px">st</span></div>
+          <div class="stat-label" id="stat2"></div>
+        </div>
+        <div class="stat-card" style="background:var(--sage)">
+          <div class="stat-num" style="color:var(--cream)">706</div>
+          <div class="stat-label" id="stat3"></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">12<span style="font-size:20px;color:var(--gold)">yr</span></div>
+          <div class="stat-label" id="stat4"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section projects-section">
+  <div class="container">
+    <div class="section-label" id="projects-label"></div>
+    <div class="section-title" id="projects-title"></div>
+    <div class="projects-grid" id="projects-grid"></div>
+  </div>
+</section>
+
+<section class="section interests-section">
+  <div class="container">
+    <div class="section-label" id="interests-label"></div>
+    <div class="section-title" id="interests-title"></div>
+    <div class="interests-flow" id="interests-flow"></div>
+  </div>
+</section>
+
+<section class="section goals-section">
+  <div class="container">
+    <div class="section-label" id="goals-label"></div>
+    <div class="section-title" id="goals-title"></div>
+    <div class="goals-list" id="goals-list"></div>
+  </div>
+</section>
+
+<section class="fun-section">
+  <div class="container">
+    <div class="section-label" id="fun-label"></div>
+    <div class="section-title" id="fun-title"></div>
+  </div>
+  <div class="fun-ticker"><div class="fun-ticker-inner" id="ticker-inner"></div></div>
+  <div class="container">
+    <div class="fun-grid" id="fun-grid"></div>
+  </div>
+</section>
+
+<section class="connect-section">
+  <div class="container">
+    <div class="section-label" id="connect-label"></div>
+    <div class="connect-title" id="connect-title"></div>
+    <div class="connect-sub" id="connect-sub"></div>
+    <a href="mailto:hello@jiaxue.me" class="connect-cta" id="connect-cta"></a>
+  </div>
+</section>
+
+<footer class="footer">
+  <span>佳雪 · Jiaxue · Paris 🇫🇷</span>
+  <span id="footer-right"></span>
+</footer>
+
+<script>
+const T = {
+  zh: {
+    heroTagline: `把这段生活「攒着用」——<br>为未来数字游民 + 一人公司的生活<br>努力准备中 ✦`,
+    heroSubtitle: "Freelancer · Builder · Connector",
+    roles: [
+      {emoji:"📦",title:"物流数据分析师",sub:"商科 + 供应链数字化转型 + 数据建模<br>巴黎自由打工人"},
+      {emoji:"🎭",title:"音乐剧社团创始人",sub:"已在法国注册 · 25年夏至音乐节演出<br>今年准备进剧场！"},
+      {emoji:"🤝",title:"706 巴黎节点负责人",sub:"巴黎社群重建中 · 连接在欧华人"},
+      {emoji:"🫶",title:"SmallWOD Co-builder",sub:"出海通讯录 · 2025年新晋共建者"},
+      {emoji:"🛏️",title:"沙发客接待人",sub:"一年多 · 接待近30位姐妹<br>几位已成为朋友 🤍"},
+    ],
+    aboutLabel:"关于我 · About", aboutTitle:"自由的人<br>认真生活",
+    aboutText:`<p>我是佳雪，目前在巴黎过着<span class="highlight">自由打工人</span>的生活。白天是供应链数字化转型和数据分析师，下班后是剧团创始人、社群组织者，还有一个正在成长中的 builder。</p><p>我相信好的生活需要被「设计」——所以我把现在的每一段经历都当作积累，为未来的<span class="highlight">数字游民 + 一人公司</span>模式打地基。</p><p>喜欢人聚在一起的能量。曾是2024巴黎奥运会志愿者，策划过播客、读书会、看球局。认识一些巴黎在地艺术家和策展人，正在寻找服务出海品牌活动的机会。</p><p style="color:var(--accent);font-family:'Playfair Display',serif;font-style:italic;font-size:15px;">有感兴趣的合作，欢迎滴滴！</p>`,
+    stat1:"接待沙发客姐妹<br>巴黎家成了中转站", stat2:"音乐剧社团<br>年度演出准备中",
+    stat3:"巴黎节点负责人<br>共创空间重建中", stat4:"Kpop 老粉<br>hip-hop 被选领舞",
+    projectsLabel:"在做的事 · Projects", projectsTitle:`正在建造<br><em style="color:var(--gold)">的世界</em>`,
+    projects:[
+      {icon:"🎭",name:"音乐剧社团",desc:"在法国正式注册的华人音乐剧社团。已完成夏至音乐节演出，今年目标是登上剧场舞台。戏剧是我理解世界和连接人的方式。",tag:"Arts · Community"},
+      {icon:"🤝",name:"706 巴黎",desc:"706青年空间的巴黎节点，连接在欧华人青年，建立真实的线下社群。目前正在重建阶段，欢迎感兴趣的朋友加入。",tag:"Community · Space"},
+      {icon:"🧠",name:"AI Agent 量化交易",desc:"2025年上半年重点目标之一：把 AI Agent 应用到量化交易，实现收益 KPI，走向财务自由的第一步。",tag:"Web3 · AI · Finance"},
+      {icon:"🫶",name:"SmallWOD 出海通讯录",desc:"2025年加入的出海社群项目，作为 Co-builder 参与共建，连接出海创业者和从业者的知识网络。",tag:"Newsletter · Collab"},
+      {icon:"🎪",name:"品牌活动策划",desc:"认识巴黎在地的艺术家和策展人，正在寻找服务出海品牌的线下活动机会。有兴趣的品牌朋友来聊！",tag:"Events · BD"},
+      {icon:"📦",name:"供应链数字化咨询",desc:"本职专业，供应链 + 数据建模 + 数字化转型。动手能力不错，欢迎有相关需求的朋友合作探讨。",tag:"Data · Supply Chain"},
+    ],
+    interestsLabel:"关注领域 · Interests", interestsTitle:"持续关注<br>的话题",
+    interests:[
+      {t:"AI Agent 自动化",c:"gold"},{t:"量化交易",c:"accent"},{t:"供应链数字化",c:""},
+      {t:"品牌建设 BD",c:"gold"},{t:"戏剧创作",c:"accent"},{t:"社区设计",c:""},
+      {t:"数字游民",c:"gold"},{t:"青年共居",c:""},{t:"女性共居",c:"accent"},
+      {t:"Web3 Builder",c:""},{t:"出海创业",c:"gold"},{t:"一人公司",c:""},
+      {t:"巴黎在地艺术",c:"accent"},{t:"策展",c:""},{t:"人类聚在一起",c:"gold"},
+    ],
+    goalsLabel:"2025 上半年目标 · Goals", goalsTitle:"今年要做<br>的五件事",
+    goals:[
+      {title:"📈 交易收益达 KPI",detail:"AI Agent 量化交易落地，实现财务目标，为独立生活打下基础。"},
+      {title:"💰 攒钱存款达 KPI",detail:"有计划地积累，为未来数字游民 + 一人公司模式储备弹药。"},
+      {title:"🎤 组织更多有趣活动",detail:"遇到几个值得记录的人，开始采访计划，收集有趣的人和故事。"},
+      {title:"🎭 圆满完成剧团年度演出",detail:"音乐剧社团第一年，登上剧场舞台，给自己和团员们一个完整的答案。"},
+      {title:"⛓️ 迈向 Web3，成为真 Builder",detail:"不只是观望，要真正参与建造。学习、实践、连接，成为 Web3 世界的一分子。"},
+    ],
+    funLabel:"其他成就 · Easter Eggs", funTitle:"另一面的<br>佳雪",
+    ticker:"国乙开服玩家 · KPOP 12年老粉 · Hip-hop 领舞 · 架子鼓新手 · 播客主理人 · 读书会发起人 · 看球局组织者 · 2024巴黎奥运志愿者",
+    funCards:[
+      {emoji:"🎮",text:"国乙开服玩家，见证了一个游戏的诞生与成长"},
+      {emoji:"🎵",text:"Kpop 12年老粉，hip-hop课被老师选成领舞"},
+      {emoji:"🥁",text:"架子鼓新手，业余生活就是要敲敲打打"},
+      {emoji:"🏅",text:"2024巴黎奥运志愿者，喜欢看人类聚在一起庆祝与创造"},
+    ],
+    connectLabel:"连接 · Let's Talk", connectTitle:`找我<br><em>聊聊</em>？`,
+    connectSub:"如果你在做出海品牌活动、Web3 建设、社区设计、戏剧创作，或者只是想在巴黎喝杯咖啡——欢迎来找我！",
+    connectCta:"Say Hello →", footerRight:"把生活攒着用 · 2025",
+  },
+
+  en: {
+    heroTagline:`Saving this chapter of life<br>for a future as a digital nomad<br>& solo entrepreneur ✦`,
+    heroSubtitle:"Freelancer · Builder · Connector",
+    roles:[
+      {emoji:"📦",title:"Supply Chain Data Analyst",sub:"Business + Supply Chain Digitalisation + Data Modelling<br>Freelancer in Paris"},
+      {emoji:"🎭",title:"Musical Theatre Troupe Founder",sub:"Registered in France · Fête de la Musique 2025<br>Heading to the stage this year!"},
+      {emoji:"🤝",title:"706 Paris Node Lead",sub:"Rebuilding the Paris community hub<br>Connecting Chinese youth in Europe"},
+      {emoji:"🫶",title:"SmallWOD Co-builder",sub:"Overseas Chinese Newsletter · Joined 2025"},
+      {emoji:"🛏️",title:"Couchsurfing Host",sub:"1+ year · Nearly 30 guests hosted<br>A few are now close friends 🤍"},
+    ],
+    aboutLabel:"About", aboutTitle:"Living freely,<br>living fully",
+    aboutText:`<p>I'm Jiaxue — a <span class="highlight">freelance</span> supply chain data analyst in Paris. By day I work on supply chain digitalisation and data modelling; after hours I'm a theatre troupe founder, community organiser, and builder-in-progress.</p><p>I believe a good life has to be <em>designed</em>. Every experience I accumulate now is groundwork for a future of <span class="highlight">digital nomadism & a one-person company</span>.</p><p>I'm energised by people gathering together. Volunteer at the 2024 Paris Olympics; organised podcasts, book clubs, and sports watch parties. I know Paris-based artists and curators — actively looking for brand event opportunities for global companies.</p><p style="color:var(--accent);font-family:'Playfair Display',serif;font-style:italic;font-size:15px;">Interested in collaborating? Let's talk!</p>`,
+    stat1:"Couchsurfing guests hosted<br>Paris home as a waystation", stat2:"Musical theatre troupe<br>Annual show in the works",
+    stat3:"706 Paris node lead<br>Co-creation space rebuilding", stat4:"Years as a Kpop fan<br>Chosen as hip-hop lead dancer",
+    projectsLabel:"Projects", projectsTitle:`Building<br><em style="color:var(--gold)">my world</em>`,
+    projects:[
+      {icon:"🎭",name:"Musical Theatre Troupe",desc:"A Chinese musical theatre troupe registered in France. Performed at Fête de la Musique 2025 — now preparing for a full theatre show.",tag:"Arts · Community"},
+      {icon:"🤝",name:"706 Paris",desc:"The Paris node of 706 Youth Space — building genuine offline community for Chinese youth in Europe. Currently in a rebuilding phase.",tag:"Community · Space"},
+      {icon:"🧠",name:"AI Agent Quant Trading",desc:"Key H1 2025 goal: apply AI Agents to quantitative trading, hit a revenue KPI, and take the first step towards financial independence.",tag:"Web3 · AI · Finance"},
+      {icon:"🫶",name:"SmallWOD Newsletter",desc:"Joined as co-builder in 2025. An overseas Chinese community project connecting entrepreneurs and professionals with a curated knowledge network.",tag:"Newsletter · Collab"},
+      {icon:"🎪",name:"Brand Event Planning",desc:"With connections to Paris-based artists and curators, I'm looking for opportunities to create memorable offline events for global brands.",tag:"Events · BD"},
+      {icon:"📦",name:"Supply Chain Consulting",desc:"My core expertise: supply chain + data modelling + digital transformation. Happy to explore collaboration if you have relevant needs.",tag:"Data · Supply Chain"},
+    ],
+    interestsLabel:"Interests", interestsTitle:"Topics I'm<br>obsessed with",
+    interests:[
+      {t:"AI Agent Automation",c:"gold"},{t:"Quant Trading",c:"accent"},{t:"Supply Chain Tech",c:""},
+      {t:"Brand Building & BD",c:"gold"},{t:"Theatre Writing",c:"accent"},{t:"Community Design",c:""},
+      {t:"Digital Nomadism",c:"gold"},{t:"Youth Co-living",c:""},{t:"Women's Co-living",c:"accent"},
+      {t:"Web3 Building",c:""},{t:"Global Entrepreneurship",c:"gold"},{t:"Solo Business",c:""},
+      {t:"Paris Art Scene",c:"accent"},{t:"Curating",c:""},{t:"People Gathering",c:"gold"},
+    ],
+    goalsLabel:"H1 2025 Goals", goalsTitle:"Five things<br>I'm doing this year",
+    goals:[
+      {title:"📈 Hit trading revenue KPI",detail:"Land AI Agent quant trading, reach financial targets, and lay the groundwork for an independent lifestyle."},
+      {title:"💰 Hit savings KPI",detail:"Build my financial runway systematically — fuel for the future digital nomad & solo company life."},
+      {title:"🎤 Organise more interesting events",detail:"Meet people worth interviewing, launch a micro-documentary project, and keep collecting fascinating humans."},
+      {title:"🎭 Pull off the troupe's annual show",detail:"Year one of the musical theatre troupe — get on a real stage and give our members a meaningful conclusion."},
+      {title:"⛓️ Step into Web3, become a real builder",detail:"Not just watching from the sidelines. Learn, build, connect — become a genuine participant in the Web3 world."},
+    ],
+    funLabel:"Easter Eggs", funTitle:"The other<br>side of Jiaxue",
+    ticker:"Day-one gamer · 12-yr Kpop stan · Hip-hop lead dancer · Drumming newbie · Podcast host · Book club founder · Match-watching organiser · 2024 Paris Olympics volunteer",
+    funCards:[
+      {emoji:"🎮",text:"Day-one player in a Chinese mobile game — watched it grow from launch"},
+      {emoji:"🎵",text:"12-year Kpop stan; picked as lead dancer in hip-hop class"},
+      {emoji:"🥁",text:"Drumming newbie — because off-hours life deserves some noise"},
+      {emoji:"🏅",text:"2024 Paris Olympics volunteer — I love watching humans gather to celebrate and create"},
+    ],
+    connectLabel:"Let's Talk", connectTitle:`Want to<br><em>connect</em>?`,
+    connectSub:"Working on global brand events, Web3, community design, theatre — or just want a coffee in Paris? Reach out!",
+    connectCta:"Say Hello →", footerRight:"Saving up life · 2025",
+  },
+
+  fr: {
+    heroTagline:`Je capitalise sur cette vie parisienne<br>pour devenir nomade numérique<br>& entreprise solo ✦`,
+    heroSubtitle:"Freelance · Builder · Connectrice",
+    roles:[
+      {emoji:"📦",title:"Analyste données supply chain",sub:"Commerce + Transformation digitale + Modélisation<br>Freelance à Paris"},
+      {emoji:"🎭",title:"Fondatrice d'une troupe de comédie musicale",sub:"Enregistrée en France · Fête de la Musique 2025<br>Direction la scène cette année !"},
+      {emoji:"🤝",title:"Responsable nœud 706 Paris",sub:"Reconstruction de la communauté parisienne<br>Connexion des jeunes Chinois en Europe"},
+      {emoji:"🫶",title:"Co-builder SmallWOD",sub:"Newsletter diaspora chinoise · Rejointe en 2025"},
+      {emoji:"🛏️",title:"Hôte couchsurfing",sub:"Plus d'un an · Près de 30 voyageuses accueillies<br>Quelques-unes sont devenues amies 🤍"},
+    ],
+    aboutLabel:"À propos", aboutTitle:"Vivre libre,<br>vivre pleinement",
+    aboutText:`<p>Je suis Jiaxue — analyste données supply chain <span class="highlight">freelance</span> à Paris. Le jour, je travaille sur la transformation digitale de la supply chain ; le soir, je suis fondatrice de troupe, organisatrice de communauté, et builder en devenir.</p><p>Je crois qu'une belle vie se <em>conçoit</em>. Chaque expérience que j'accumule pose les bases d'un futur de <span class="highlight">nomade numérique & d'entreprise solo</span>.</p><p>Je suis galvanisée par l'énergie des gens qui se rassemblent. Bénévole aux JO de Paris 2024 ; organisatrice de podcasts, clubs de lecture et soirées sport. Je connais des artistes et commissaires parisiens — et cherche des opportunités d'événements pour des marques à l'international.</p><p style="color:var(--accent);font-family:'Playfair Display',serif;font-style:italic;font-size:15px;">Une collaboration en tête ? Parlons-en !</p>`,
+    stat1:"Voyageurs accueillis<br>Mon appart, un point de passage", stat2:"Troupe de comédie musicale<br>Spectacle annuel en préparation",
+    stat3:"Responsable nœud 706 Paris<br>Espace co-création en reconstruction", stat4:"Ans de fan Kpop<br>Choisie pour mener le cours hip-hop",
+    projectsLabel:"Projets", projectsTitle:`Je construis<br><em style="color:var(--gold)">mon monde</em>`,
+    projects:[
+      {icon:"🎭",name:"Troupe de comédie musicale",desc:"Une troupe chinoise officiellem enregistrée en France. Après la Fête de la Musique 2025, cap sur une vraie salle de spectacle.",tag:"Arts · Communauté"},
+      {icon:"🤝",name:"706 Paris",desc:"Le nœud parisien de 706 Youth Space — créer une vraie communauté hors ligne pour les jeunes Chinois en Europe. Phase de reconstruction en cours.",tag:"Communauté · Espace"},
+      {icon:"🧠",name:"Trading quant via AI Agent",desc:"Objectif clé S1 2025 : appliquer les AI Agents au trading quantitatif, atteindre un KPI de rendement, premier pas vers l'indépendance financière.",tag:"Web3 · IA · Finance"},
+      {icon:"🫶",name:"Newsletter SmallWOD",desc:"Co-builder depuis 2025. Un projet communautaire diaspora chinoise qui connecte entrepreneurs et professionnels en réseau de connaissances.",tag:"Newsletter · Collab"},
+      {icon:"🎪",name:"Événements de marque",desc:"Grâce à mon réseau d'artistes et commissaires parisiens, je cherche des opportunités d'événements pour des marques à l'international.",tag:"Événements · BD"},
+      {icon:"📦",name:"Conseil supply chain digitale",desc:"Mon cœur de métier : supply chain + modélisation de données + transformation digitale. Contactez-moi pour une collaboration.",tag:"Données · Supply Chain"},
+    ],
+    interestsLabel:"Centres d'intérêt", interestsTitle:"Les sujets qui<br>m'obsèdent",
+    interests:[
+      {t:"Automatisation AI Agent",c:"gold"},{t:"Trading quantitatif",c:"accent"},{t:"Supply chain digitale",c:""},
+      {t:"Marque & Développement",c:"gold"},{t:"Écriture théâtrale",c:"accent"},{t:"Design communautaire",c:""},
+      {t:"Nomadisme numérique",c:"gold"},{t:"Coliving jeunes",c:""},{t:"Coliving féminin",c:"accent"},
+      {t:"Web3 Building",c:""},{t:"Entrepreneuriat international",c:"gold"},{t:"Entreprise solo",c:""},
+      {t:"Art parisien local",c:"accent"},{t:"Commissariat",c:""},{t:"Humains réunis",c:"gold"},
+    ],
+    goalsLabel:"Objectifs S1 2025", goalsTitle:"Cinq choses<br>à accomplir cette année",
+    goals:[
+      {title:"📈 Atteindre le KPI de trading",detail:"Déployer le trading quant via AI Agent, atteindre les objectifs financiers, poser les bases d'un mode de vie indépendant."},
+      {title:"💰 Atteindre le KPI d'épargne",detail:"Construire méthodiquement mes réserves — le carburant du futur nomade numérique & entrepreneur solo."},
+      {title:"🎤 Organiser plus d'événements",detail:"Rencontrer des personnalités à interviewer, lancer un mini-projet documentaire, collectionner des gens fascinants."},
+      {title:"🎭 Réussir le spectacle annuel de la troupe",detail:"Première année de la troupe — monter sur scène et offrir une vraie conclusion à tous les membres."},
+      {title:"⛓️ Entrer dans le Web3, devenir un vrai builder",detail:"Plus question d'observer depuis les gradins. Apprendre, construire, connecter — devenir actrice du monde Web3."},
+    ],
+    funLabel:"Anecdotes & Easter Eggs", funTitle:"L'autre<br>visage de Jiaxue",
+    ticker:"Gameuse day-one · 12 ans de Kpop · Danseuse hip-hop en vedette · Débutante à la batterie · Podcasteuse · Club de lecture · Soirées sport · Bénévole JO Paris 2024",
+    funCards:[
+      {emoji:"🎮",text:"Gameuse day-one d'un jeu mobile chinois — j'en ai vu la naissance et la croissance"},
+      {emoji:"🎵",text:"Fan de Kpop depuis 12 ans ; choisie pour mener le cours de hip-hop"},
+      {emoji:"🥁",text:"Débutante à la batterie — parce que les loisirs méritent un peu de bruit"},
+      {emoji:"🏅",text:"Bénévole aux JO Paris 2024 — j'adore voir les humains se réunir pour célébrer et créer"},
+    ],
+    connectLabel:"On se parle ?", connectTitle:`Envie de<br><em>collaborer</em> ?`,
+    connectSub:"Tu travailles sur des événements de marque, du Web3, du design communautaire, du théâtre — ou tu veux simplement prendre un café à Paris ? Écris-moi !",
+    connectCta:"Dire bonjour →", footerRight:"Capitaliser sur la vie · 2025",
+  }
+};
+
+function render(lang) {
+  const t = T[lang];
+  document.getElementById('hero-tagline').innerHTML = t.heroTagline;
+  document.getElementById('hero-subtitle').textContent = t.heroSubtitle;
+  document.getElementById('roles-list').innerHTML = t.roles.map(r =>
+    `<li><span class="role-emoji">${r.emoji}</span><div class="role-content"><div class="role-title">${r.title}</div><div class="role-sub">${r.sub}</div></div></li>`).join('');
+  document.getElementById('about-label').textContent = t.aboutLabel;
+  document.getElementById('about-title').innerHTML = t.aboutTitle;
+  document.getElementById('about-text').innerHTML = t.aboutText;
+  ['stat1','stat2','stat3','stat4'].forEach((id,i) => document.getElementById(id).innerHTML = t[id]);
+  document.getElementById('projects-label').textContent = t.projectsLabel;
+  document.getElementById('projects-title').innerHTML = t.projectsTitle;
+  document.getElementById('projects-grid').innerHTML = t.projects.map(p =>
+    `<div class="project-card"><div class="project-icon">${p.icon}</div><div class="project-name">${p.name}</div><div class="project-desc">${p.desc}</div><span class="project-tag">${p.tag}</span></div>`).join('');
+  document.getElementById('interests-label').textContent = t.interestsLabel;
+  document.getElementById('interests-title').innerHTML = t.interestsTitle;
+  document.getElementById('interests-flow').innerHTML = t.interests.map(i =>
+    `<span class="interest-pill ${i.c}">${i.t}</span>`).join('');
+  document.getElementById('goals-label').textContent = t.goalsLabel;
+  document.getElementById('goals-title').innerHTML = t.goalsTitle;
+  document.getElementById('goals-list').innerHTML = t.goals.map((g,i) =>
+    `<div class="goal-item"><div class="goal-num">${String(i+1).padStart(2,'0')}</div><div class="goal-content"><div class="goal-title">${g.title}</div><div class="goal-detail">${g.detail}</div></div></div>`).join('');
+  document.getElementById('fun-label').textContent = t.funLabel;
+  document.getElementById('fun-title').innerHTML = t.funTitle;
+  const tk = t.ticker + ' · ' + t.ticker + ' · ';
+  document.getElementById('ticker-inner').textContent = tk;
+  document.getElementById('fun-grid').innerHTML = t.funCards.map(c =>
+    `<div class="fun-card"><div class="fun-emoji">${c.emoji}</div><div class="fun-text">${c.text}</div></div>`).join('');
+  document.getElementById('connect-label').textContent = t.connectLabel;
+  document.getElementById('connect-title').innerHTML = t.connectTitle;
+  document.getElementById('connect-sub').textContent = t.connectSub;
+  document.getElementById('connect-cta').textContent = t.connectCta;
+  document.getElementById('footer-right').textContent = t.footerRight;
+}
+
+function setLang(lang) {
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    const map = {zh:'中文', en:'EN', fr:'FR'};
+    b.classList.toggle('active', b.textContent.trim() === map[lang]);
+  });
+  render(lang);
+  document.documentElement.classList.remove('lang-fade');
+  void document.documentElement.offsetWidth;
+  document.documentElement.classList.add('lang-fade');
+}
+
+render('zh');
+</script>
+</body>
+</html>
